@@ -1,6 +1,7 @@
 const log = require('debug')('rest-flat');
 const koa = require('koa');
-const route = require('koa-path-match')();
+const to = require('koa-path-match')();
+
 module.exports = flat => {
   const app = new koa();
 
@@ -10,8 +11,11 @@ module.exports = flat => {
         obj[key] = flat.get(key);
         return obj;
       }, {});
-    }
+    },
+    has: flat.has.bind(flat),
+    get: flat.get.bind(flat)
   };
+
   app.use(async (ctx, next) => {
     const start = Date.now();
     await next();
@@ -19,9 +23,30 @@ module.exports = flat => {
   });
 
   app.use(
-    route('/').get(async ctx => {
-      ctx.body = await db.index();
+    to('/', async (ctx, next) => {
+      switch (ctx.method) {
+        case 'GET':
+          ctx.body = await db.index();
+          break;
+        default:
+          return next();
+      }
     })
   );
+
+  app.use(
+    to('/:key', async (ctx, next) => {
+      switch (ctx.method) {
+        case 'GET':
+          const exists = await db.has(ctx.params.key);
+          ctx.status = exists ? 200 : 404;
+          ctx.body = await db.get(ctx.params.key);
+          break;
+        default:
+          return next();
+      }
+    })
+  );
+
   return app;
 };
