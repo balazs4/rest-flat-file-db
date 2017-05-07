@@ -39,8 +39,8 @@ module.exports = flat => {
       switch (ctx.method) {
         case 'GET':
           const exists = await db.has(ctx.params.key);
-          ctx.status = exists ? 200 : 404;
           ctx.body = await db.get(ctx.params.key);
+          ctx.status = exists === true ? 200 : 404;
           break;
         default:
           return next();

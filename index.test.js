@@ -43,3 +43,9 @@ test('GET /foo should response with 200 and the value of "foo"', async () => {
   expect(response.statusCode).toBe(200);
   expect(response.body).toEqual({ bar: 42 });
 });
+
+test('GET /doesnotexist should response with 404 and undefined body', async () => {
+  const response = await hit(`${url}/doesnotexist`, { json: true });
+  expect(response.statusCode).toBe(404);
+  expect(response.body).toBeUndefined();
+});
