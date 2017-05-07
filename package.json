@@ -6,7 +6,8 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^2.6.6",
-    "koa": "^2.2.0"
+    "koa": "^2.2.0",
+    "koa-path-match": "^2.0.0"
   },
   "devDependencies": {
     "got": "^6.7.1",

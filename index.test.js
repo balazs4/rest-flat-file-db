@@ -14,7 +14,6 @@ beforeAll(() => {
     `${process.pid}-${Date.now()}.db`
   );
   db = flat.sync(tmp);
-  console.log(tmp);
   return new Promise(resolve => db.put('foo', { bar: 42 }, resolve));
 });
 
@@ -24,7 +23,10 @@ test('smokes', async () => {
       resolve(`http://localhost:${srv.address().port}`);
     });
   });
-  const response = await got(url, { json: true });
+
+  const response = await got(`${url}/`, { json: true }).catch(err => {
+    expect(err).toBeUndefined();
+  });
   expect(response.body).toEqual({
     foo: { bar: 42 }
   });
