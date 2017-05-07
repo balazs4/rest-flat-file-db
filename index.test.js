@@ -4,6 +4,8 @@ const got = require('got');
 const flat = require('flat-file-db');
 const app = require('.');
 
+// Util methods
+
 const tmpDB = () =>
   new Promise(resolve => {
     const tmp = path.join(os.tmpdir(), `rest-flat.${Date.now()}.db`);
@@ -19,9 +21,11 @@ const listen = app =>
   });
 
 const hit = (url, options) =>
-  new Promise(resolve => {
+  new Promise(async resolve => {
     return got(url, options).then(resolve).catch(resolve);
   });
+
+// ############### TESTCASES ###################
 
 let url;
 beforeAll(async () => {
@@ -42,6 +46,16 @@ test('GET /foo should response with 200 and the value of "foo"', async () => {
   const response = await hit(`${url}/foo`, { json: true });
   expect(response.statusCode).toBe(200);
   expect(response.body).toEqual({ bar: 42 });
+});
+
+test('POST /foo should response 409 Conflict ', async () => {
+  const response = await hit(`${url}/foo`, {
+    json: true,
+    method: 'POST',
+    body: 'newcontent'
+  });
+  expect(response.statusCode).toBe(409);
+  expect(response.body).toBeUndefined();
 });
 
 test('GET /doesnotexist should response with 404 and undefined body', async () => {

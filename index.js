@@ -36,12 +36,21 @@ module.exports = flat => {
 
   app.use(
     to('/:key', async (ctx, next) => {
+      const exists = await db.has(ctx.params.key);
       switch (ctx.method) {
         case 'GET':
-          const exists = await db.has(ctx.params.key);
           ctx.body = await db.get(ctx.params.key);
           ctx.status = exists === true ? 200 : 404;
           break;
+
+        case 'POST':
+          if (exists) {
+            ctx.status = 409;
+          } else {
+            ctx.throw(500);
+          }
+          break;
+
         default:
           return next();
       }
