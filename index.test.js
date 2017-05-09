@@ -42,6 +42,12 @@ test('GET / should response with all keys and values from the DB', async () => {
   });
 });
 
+test('GET /doesnotexist should response with 404 and undefined body', async () => {
+  const response = await hit(`${url}/doesnotexist`, { json: true });
+  expect(response.statusCode).toBe(404);
+  expect(response.body).toBeUndefined();
+});
+
 test('GET /foo should response with 200 and the value of "foo"', async () => {
   const response = await hit(`${url}/foo`, { json: true });
   expect(response.statusCode).toBe(200);
@@ -58,8 +64,16 @@ test('POST /foo should response 409 Conflict ', async () => {
   expect(response.body).toBeUndefined();
 });
 
-test('GET /doesnotexist should response with 404 and undefined body', async () => {
-  const response = await hit(`${url}/doesnotexist`, { json: true });
-  expect(response.statusCode).toBe(404);
-  expect(response.body).toBeUndefined();
+test('POST /foo2 should response 201', async () => {
+  const response = await hit(`${url}/foo2`, {
+    json: true,
+    method: 'POST',
+    body: { bar: 44 }
+  });
+  expect(response.statusCode).toBe(201);
+  //expect(response.header['location']).toBe(`${url}/foo2`);
+
+  const check = await hit(`${url}/foo2`, { json: true });
+  expect(check.statusCode).toBe(200);
+  expect(check.body).toEqual({ bar: 44 });
 });
