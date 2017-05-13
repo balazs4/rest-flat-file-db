@@ -78,11 +78,17 @@ test('POST /foo should response 409 and the conflicting item', () =>
     verify(409, { bar: 42 })
   ));
 
-test('POST /foo2 should response 201 and the location header should contain full-qualified url', () => {
-  const foo2 = { bar: 16, bazz: true, note: 'yay' };
-  return hit('/foo2', { method: 'POST', body: foo2 })
+test('POST /foo2 should response 201 and the location header should the url', () =>
+  hit('/foo2', { method: 'POST', body: { bar: 16, bazz: true, note: 'yay' } })
     .then(verify(201, 'Created'))
     .then(response => {
       expect(response.headers['location']).toBe('/foo2');
-    });
-});
+    }));
+
+test('PUT /foo2 should response 200 and the updated item', () =>
+  hit('/foo2', { method: 'PUT', body: { new: 'content' } }).then(
+    verify(200, { new: 'content' })
+  ));
+
+test('DELETE /foo2 should response 200 and the deleted item', () =>
+  hit('/foo2', { method: 'DELETE' }).then(verify(200, { new: 'content' })));

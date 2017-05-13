@@ -18,7 +18,8 @@ module.exports = flat => {
     put: (key, value) =>
       new Promise(resolve => {
         flat.put(key, value, resolve);
-      })
+      }),
+    del: key => new Promise(resolve => flat.del(key, resolve))
   };
 
   app.use(bodyparser());
@@ -45,6 +46,7 @@ module.exports = flat => {
     to('/:key', async (ctx, next) => {
       const { key } = ctx.params;
       const exists = await db.has(key);
+
       switch (ctx.method) {
         case 'GET':
           ctx.body = await db.get(key);
@@ -60,6 +62,23 @@ module.exports = flat => {
             await db.put(key, body);
             ctx.response.set('location', `/${key}`);
             ctx.status = 201;
+          }
+          break;
+
+        case 'PUT':
+          if (exists) {
+            const { body } = ctx.request;
+            await db.put(key, body);
+            ctx.body = body;
+            ctx.status = 200;
+          }
+          break;
+
+        case 'DELETE':
+          if (exists) {
+            ctx.body = await db.get(key);
+            await db.del(key);
+            ctx.status = 200;
           }
           break;
 
