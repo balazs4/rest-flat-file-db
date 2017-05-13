@@ -53,12 +53,12 @@ module.exports = flat => {
 
         case 'POST':
           if (exists) {
+            ctx.body = await db.get(key);
             ctx.status = 409;
           } else {
             const { body } = ctx.request;
-            console.log(JSON.stringify(body));
             await db.put(key, body);
-            ctx.headers['location'] = `/${key}`;
+            ctx.response.set('location', `/${key}`);
             ctx.status = 201;
           }
           break;

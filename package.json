@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "balazs4 <balazs4web@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "echo 'work in progress'",
+    "test": "jest"
+  },
   "dependencies": {
     "debug": "^2.6.6",
     "koa": "^2.2.0",
@@ -11,8 +15,8 @@
     "koa-path-match": "^2.0.0"
   },
   "devDependencies": {
-    "got": "^6.7.1",
-    "jest": "^20.0.0"
+    "jest": "^20.0.0",
+    "request-promise-native": "^1.0.4"
   },
   "peerDependencies": {
     "flat-file-db": "^1.0.0"

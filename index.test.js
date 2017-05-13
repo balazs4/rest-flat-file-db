@@ -1,6 +1,6 @@
 const path = require('path');
 const os = require('os');
-const got = require('got');
+const request = require('request-promise-native');
 const flat = require('flat-file-db');
 const app = require('.');
 
@@ -16,64 +16,73 @@ const tmpDB = () =>
 const listen = app =>
   new Promise(resolve => {
     const srv = app.listen(() => {
-      resolve(`http://localhost:${srv.address().port}`);
+      resolve({
+        url: `http://localhost:${srv.address().port}`,
+        close: srv.close.bind(srv)
+      });
     });
   });
 
-const hit = (url, options) =>
-  new Promise(async resolve => {
-    return got(url, options).then(resolve).catch(resolve);
-  });
+const client = url => (endpoint = '/', options = {}) =>
+  request(
+    Object.assign(
+      {},
+      {
+        json: true,
+        method: 'GET',
+        simple: false,
+        resolveWithFullResponse: true
+      },
+      options,
+      {
+        uri: `${url}${endpoint}`
+      }
+    )
+  );
+
+const verify = (code, body) => response => {
+  expect(response.statusCode).toBe(code);
+  expect(response.body).toEqual(body);
+  return response;
+};
 
 // ############### TESTCASES ###################
 
-let url;
+let hit, cleanup;
 beforeAll(async () => {
   const db = await tmpDB();
   await new Promise(resolve => db.put('foo', { bar: 42 }, resolve));
-  url = await listen(app(db));
+  const { url, close } = await listen(app(db));
+  hit = client(url);
+  cleanup = close;
+  return;
 });
 
-test('GET / should response with all keys and values from the DB', async () => {
-  const response = await hit(`${url}/`, { json: true });
-  expect(response.statusCode).toBe(200);
-  expect(response.body).toEqual({
-    foo: { bar: 42 }
-  });
+afterAll(() => {
+  if (cleanup && typeof cleanup === 'function') {
+    cleanup();
+  }
 });
 
-test('GET /doesnotexist should response with 404 and undefined body', async () => {
-  const response = await hit(`${url}/doesnotexist`, { json: true });
-  expect(response.statusCode).toBe(404);
-  expect(response.body).toBeUndefined();
-});
+test('GET / should response 200 and a single object contains all key-value pairs', () =>
+  hit('/').then(verify(200, { foo: { bar: 42 } })));
 
-test('GET /foo should response with 200 and the value of "foo"', async () => {
-  const response = await hit(`${url}/foo`, { json: true });
-  expect(response.statusCode).toBe(200);
-  expect(response.body).toEqual({ bar: 42 });
-});
+test('GET /doesnotexist should response 404 and "Not Found"', () =>
+  hit('/doestnotexists').then(verify(404, 'Not Found')));
 
-test('POST /foo should response 409 Conflict ', async () => {
-  const response = await hit(`${url}/foo`, {
-    json: true,
-    method: 'POST',
-    body: 'newcontent'
-  });
-  expect(response.statusCode).toBe(409);
-  expect(response.body).toBeUndefined();
-});
+test('GET /foo should response 200 and only the value of "foo"', () =>
+  hit('/foo').then(verify(200, { bar: 42 })));
 
-test('POST /foo2 should response 201', async () => {
-  const response = await hit(`${url}/foo2`, {
-    json: true,
-    method: 'POST',
-    body: { bar: 44 }
-  });
-  expect(response.statusCode).toBe(201);
-  //expect(response.header['location']).toBe(`${url}/foo2`);
+test('POST /foo should response 409 and the conflicting item', () =>
+  hit('/foo', { method: 'POST', body: { new: 'content' } }).then(
+    verify(409, { bar: 42 })
+  ));
 
-  const check = await hit(`${url}/foo2`, { json: true });
-  expect(check.statusCode).toBe(200);
-  expect(check.body).toEqual({ bar: 44 });
+test('POST /foo2 should response 201 and the location header should contain full-qualified url', () => {
+  const foo2 = { bar: 16, bazz: true, note: 'yay' };
+  return hit('/foo2', { method: 'POST', body: foo2 })
+    .then(verify(201, 'Created'))
+    .then(response => {
+      expect(response.headers['location']).toBe('/foo2');
+    });
 });
