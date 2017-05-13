@@ -5,11 +5,13 @@
   "author": "balazs4 <balazs4web@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "echo 'work in progress'",
+    "start": "node start.js",
+    "start:verbose": "DEBUG=rest-flat node start.js",
     "test": "jest"
   },
   "dependencies": {
     "debug": "^2.6.6",
+    "flat-file-db": "^1.0.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-path-match": "^2.0.0"
@@ -17,8 +19,5 @@
   "devDependencies": {
     "jest": "^20.0.0",
     "request-promise-native": "^1.0.4"
-  },
-  "peerDependencies": {
-    "flat-file-db": "^1.0.0"
   }
 }
