@@ -92,3 +92,10 @@ test('PUT /foo2 should response 200 and the updated item', () =>
 
 test('DELETE /foo2 should response 200 and the deleted item', () =>
   hit('/foo2', { method: 'DELETE' }).then(verify(200, { new: 'content' })));
+
+test('POST / should respone 201 and the location header should be the url (incl. auto-generated key)', () =>
+  hit('/', { method: 'POST', body: { yay: 'works' } })
+    .then(verify(201, 'Created'))
+    .then(response => {
+      expect(response.headers['location']).toMatch(/\/[\w\d\-]+/);
+    }));

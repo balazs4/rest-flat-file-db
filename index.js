@@ -2,6 +2,7 @@ const log = require('debug')('rest-flat');
 const koa = require('koa');
 const to = require('koa-path-match')();
 const bodyparser = require('koa-bodyparser');
+const { v4 } = require('uuid');
 
 module.exports = flat => {
   const app = new koa();
@@ -36,6 +37,15 @@ module.exports = flat => {
         case 'GET':
           ctx.body = await db.index();
           break;
+
+        case 'POST':
+          const key = v4();
+          const { body } = ctx.request;
+          await db.put(key, body);
+          ctx.response.set('location', `/${key}`);
+          ctx.status = 201;
+          break;
+
         default:
           return next();
       }
