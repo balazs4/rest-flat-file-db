@@ -41,10 +41,26 @@ This second parameter is optional. In default case the `koa` instance  will be c
 
 ## REST API
 
-+ **GET /**        => 200 and a single object contains all key-value pairs of the database
-+ **GET /:key**    => 200 (if the `key` could be found, otherwise 404) and the value of :key
-+ **POST /:key**   => 409 if `key` already exists in the database otherwise 201 and the body of the post will be stored with the `key` in the db (response.headers['location'] contains the url to the item)
-+ **PUT /:key**    => 200 (if the `key` could be found, otherwise 404) and the **updated** item with its new content
-+ **DELETE /:key** => 200 (if the `key` could be found, otherwise 404) and the **deleted** item from the db (it acts like a `pop` call on a stack)
-+ **POST /**       => 201 and the body of the post will be stored with a **generated** key in the db (response.headers['location'] contains the url to the item)
+#### GET /
 
+200 and a single object contains all key-value pairs of the database
+
+#### GET /:key
+
+200 (if the `key` could be found, otherwise 404) and the value of :key
+
+#### POST /:key
+
+409 if `key` already exists in the database otherwise 201 and the body of the post will be stored with the `key` in the db (response.headers['location'] contains the url to the item)
+
+#### PUT /:key
+
+200 (if the `key` could be found, otherwise 404) and the **updated** item with its new content
+
+#### DELETE /:key
+
+200 (if the `key` could be found, otherwise 404) and the **deleted** item from the db (it acts like a `pop` call on a stack)
+
+#### POST /
+
+201 and the body of the post will be stored with a **generated** key in the db (response.headers['location'] contains the url to the item)
