@@ -1,5 +1,7 @@
 # rest-flat-file-db
 
+[![Build Status](https://travis-ci.org/balazs4/rest-flat-file-db.svg?branch=master)](https://travis-ci.org/balazs4/rest-flat-file-db)
+
 > REST API for [flat-file-db](https://github.com/mafintosh/flat-file-db) powered by [koa2](https://github.com/koajs/koa)
 
 ## About
