@@ -4,9 +4,7 @@ const to = require('koa-path-match')();
 const bodyparser = require('koa-bodyparser');
 const { v4 } = require('uuid');
 
-module.exports = flat => {
-  const app = new koa();
-
+module.exports = (flat, app = new koa()) => {
   const db = {
     index: () => {
       return flat.keys().reduce((obj, key) => {
