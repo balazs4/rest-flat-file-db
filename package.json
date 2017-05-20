@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node start.js",
     "start:verbose": "DEBUG=rest-flat node start.js",
-    "test": "nyc jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "debug": "^2.6.6",
