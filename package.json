@@ -1,6 +1,6 @@
 {
   "name": "rest-flat-file-db",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "REST API for flat-file-db",
   "main": "index.js",
   "author": "balazs4 <balazs4web@gmail.com>",
