@@ -14,21 +14,30 @@ It might be useful for small projects (e.g. hackathon).
 
 ## Installation
 
-`npm install rest-flat-file-db --save`
-
 ## Usage
 
 ### As standalone instance
 
 ```
-$ PORT=3333 DB=/tmp/mydatabase npm start
-```
+# install the module globally
+$ npm install -g rest-flat-file-db
 
-will start a `rest-flat-file-db` instance on `http://localhost:3333` and the values will be stored in `/tmp/mydatabase` file
+# start the module with default parameters
+$ rest-flat
+
+# OR start it with custom parameters
+$ PORT=3333 DB=/tmp/mydatabase rest-flat
+```
 
 ### As module
 
+`$ npm install rest-flat-file-db --save`
+
+
 ```javascript
+
+// index.js
+
 const restflat = require('rest-flat-file-db');
 const flatdb = require('flat-file-db');
 

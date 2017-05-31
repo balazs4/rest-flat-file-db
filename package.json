@@ -3,11 +3,13 @@
   "version": "1.1.0",
   "description": "REST API for flat-file-db",
   "main": "index.js",
+  "bin": {
+    "rest-flat": "./bin.js"
+  },
   "author": "balazs4 <balazs4web@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node start.js",
-    "start:verbose": "DEBUG=rest-flat node start.js",
+    "start": "DEBUG=rest-flat node start.js",
     "test": "jest --coverage"
   },
   "dependencies": {
