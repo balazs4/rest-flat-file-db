@@ -62,6 +62,10 @@ This second parameter is optional. In default case the `koa` instance  will be c
 
 200 (if the `key` could be found, otherwise 404) and the **updated** item with its new content
 
+#### PATCH /:key
+
+200 (if the `key` could be found, otherwise 404) and the **merged** (with `Object.assign` call) item with its new content
+
 #### DELETE /:key
 
 200 (if the `key` could be found, otherwise 404) and the **deleted** item from the db (it acts like a `pop` call on a stack)

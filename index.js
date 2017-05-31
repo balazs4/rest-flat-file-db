@@ -82,6 +82,17 @@ module.exports = (flat, app = new koa()) => {
           }
           break;
 
+        case 'PATCH':
+          if (exists) {
+            const { body } = ctx.request;
+            const object = await db.get(key);
+            const patched = Object.assign({}, object, body);
+            await db.put(key, patched);
+            ctx.body = patched;
+            ctx.status = 200;
+          }
+          break;
+
         case 'DELETE':
           if (exists) {
             ctx.body = await db.get(key);

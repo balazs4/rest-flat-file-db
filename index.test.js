@@ -90,8 +90,15 @@ test('PUT /foo2 should response 200 and the updated item', () =>
     verify(200, { new: 'content' })
   ));
 
+test('PATCH /foo2 should response 200 and the appended item', () =>
+  hit('/foo2', { method: 'PATCH', body: { patch: 'value' } }).then(
+    verify(200, { new: 'content', patch: 'value' })
+  ));
+
 test('DELETE /foo2 should response 200 and the deleted item', () =>
-  hit('/foo2', { method: 'DELETE' }).then(verify(200, { new: 'content' })));
+  hit('/foo2', { method: 'DELETE' }).then(
+    verify(200, { new: 'content', patch: 'value' })
+  ));
 
 test('POST / should respone 201 and the location header should be the url (incl. auto-generated key)', () =>
   hit('/', { method: 'POST', body: { yay: 'works' } })
