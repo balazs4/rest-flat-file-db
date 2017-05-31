@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/balazs4/rest-flat-file-db.svg?branch=master)](https://travis-ci.org/balazs4/rest-flat-file-db)
 [![dependencies](https://david-dm.org/balazs4/rest-flat-file-db/status.svg)](https://david-dm.org/balazs4/rest-flat-file-db)
 [![devDependencies](https://david-dm.org/balazs4/rest-flat-file-db/dev-status.svg)](https://david-dm.org/balazs4/rest-flat-file-db?type=dev)
-
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 > REST API for [flat-file-db](https://github.com/mafintosh/flat-file-db) powered by [koa2](https://github.com/koajs/koa)
 
