@@ -12,8 +12,6 @@
 This is a tiny module which extends the lightweight `flat-file-db` key-value based `to-go` datastorage.
 It might be useful for small projects (e.g. hackathon).
 
-## Installation
-
 ## Usage
 
 ### As standalone instance
