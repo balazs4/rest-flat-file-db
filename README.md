@@ -4,6 +4,7 @@
 [![dependencies](https://david-dm.org/balazs4/rest-flat-file-db/status.svg)](https://david-dm.org/balazs4/rest-flat-file-db)
 [![devDependencies](https://david-dm.org/balazs4/rest-flat-file-db/dev-status.svg)](https://david-dm.org/balazs4/rest-flat-file-db?type=dev)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbalazs4%2Frest-flat-file-db.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbalazs4%2Frest-flat-file-db?ref=badge_shield)
 
 > REST API for [flat-file-db](https://github.com/mafintosh/flat-file-db) powered by [koa2](https://github.com/koajs/koa)
 
@@ -80,3 +81,7 @@ This second parameter is optional. In default case the `koa` instance  will be c
 #### POST /
 
 201 and the body of the post will be stored with a **generated** key in the db (response.headers['location'] contains the url to the item)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbalazs4%2Frest-flat-file-db.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbalazs4%2Frest-flat-file-db?ref=badge_large)
